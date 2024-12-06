@@ -136,23 +136,23 @@ if __name__ == "__main__":
         time.sleep(5)  # Wait for 5 seconds before sending the next alert
 
     # Configuration
-    topic_name = "security-topic"
-    aws_region = os.getenv("AWS_REGION", "us-west-2")  # Replace with your AWS region
-    num_partitions = 3
-    replication_factor = 2
-    bootstrap_brokers = os.getenv("BOOTSTRAP_BROKERS", 'b-1.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092,b-2.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092')
-    rate_per_second = int(os.getenv("RATE_PER_SECOND", 100000))
-    num_messages = int(os.getenv("NUM_OF_MESSAGES", 10000000))
-    num_threads = 8
+    # topic_name = "security-topic"
+    # aws_region = os.getenv("AWS_REGION", "us-west-2")  # Replace with your AWS region
+    # num_partitions = 3
+    # replication_factor = 2
+    # bootstrap_brokers = os.getenv("BOOTSTRAP_BROKERS", 'b-1.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092,b-2.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092')
+    # rate_per_second = int(os.getenv("RATE_PER_SECOND", 100000))
+    # num_messages = int(os.getenv("NUM_OF_MESSAGES", 10000000))
+    # num_threads = 8
 
-    # Create Kafka topic if it doesn't exist
-    create_topic(bootstrap_brokers, topic_name, num_partitions, replication_factor)
+    # # Create Kafka topic if it doesn't exist
+    # create_topic(bootstrap_brokers, topic_name, num_partitions, replication_factor)
 
-    # Create Kafka producer
-    producer = create_producer(bootstrap_brokers)
+    # # Create Kafka producer
+    # producer = create_producer(bootstrap_brokers)
 
-    # Produce data with rate limiting
-    try:
-        produce_data(producer, topic_name, rate_per_second=rate_per_second, num_messages=num_messages, num_threads=num_threads)  # Adjust `rate_per_second` as needed
-    finally:
-        producer.close()
+    # # Produce data with rate limiting
+    # try:
+    #     produce_data(producer, topic_name, rate_per_second=rate_per_second, num_messages=num_messages, num_threads=num_threads)  # Adjust `rate_per_second` as needed
+    # finally:
+    #     producer.close()
