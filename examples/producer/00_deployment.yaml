@@ -1,0 +1,51 @@
+---
+# This is the producer deployment file, you can adjust the number of replicas to produce more data.
+# You will need to change us-east-1, b-1.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092,b-2.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092, and arn:aws:iam::992382765082:role/producer-irsa to match your environment.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: producer-sa
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::992382765082:role/producer-irsa # Replace with your producer role ARN: producer_iam_role_arn
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer-deployment
+spec:
+  replicas: 200  # Adjusted to match the required number of replicas
+  selector:
+    matchLabels:
+      app: producer
+  template:
+    metadata:
+      labels:
+        app: producer
+    spec:
+      serviceAccountName: producer-sa
+      containers:
+      - name: producer
+        image: public.ecr.aws/data-on-eks/producer-kafka:1
+        command: ["python", "app.py"]
+        env:
+          - name: RATE_PER_SECOND
+            value: "200000"
+          - name: NUM_OF_MESSAGES
+            value: "20000000"
+          - name: AWS_REGION
+            value: "us-east-1" # Replace with your AWS region
+          - name: BOOTSTRAP_BROKERS
+            value: "b-1.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092,b-2.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092" # Replace with your bootstrap brokers: bootstrap_brokers
+        resources:
+          limits:
+            cpu: "2"  # Increased CPU limit
+            memory: "4Gi"  # Increased memory limit
+          requests:
+            cpu: "1"  # Increased CPU request
+            memory: "2Gi"  # Increased memory request
+        volumeMounts:
+          - name: shared-volume
+            mountPath: /mnt
+      volumes:
+        - name: shared-volume
+          emptyDir: {}
