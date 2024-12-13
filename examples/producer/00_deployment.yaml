@@ -13,7 +13,7 @@ kind: Deployment
 metadata:
   name: producer-deployment
 spec:
-  replicas: 200  # Adjusted to match the required number of replicas
+  replicas: 10  # Adjusted to match the required number of replicas
   selector:
     matchLabels:
       app: producer
@@ -35,7 +35,7 @@ spec:
           - name: AWS_REGION
             value: "us-east-1" # Replace with your AWS region
           - name: BOOTSTRAP_BROKERS
-            value: "b-1.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092,b-2.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092" # Replace with your bootstrap brokers: bootstrap_brokers
+            value: "b-1.kafkademospark.kjxpc1.c13.kafka.us-east-1.amazonaws.com:9092,b-2.kafkademospark.kjxpc1.c13.kafka.us-east-1.amazonaws.com:9092" # Replace with your bootstrap brokers: bootstrap_brokers
         resources:
           limits:
             cpu: "2"  # Increased CPU limit

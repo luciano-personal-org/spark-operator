@@ -1,5 +1,8 @@
 # Dockerfile for Apache Spark with additional JARs downloaded at build time
-FROM apache/spark-py:v3.3.2
+#FROM apache/spark-py:v3.3.2
+
+FROM --platform=linux/amd64 apache/spark-py:v3.3.2
+
 WORKDIR /app
 
 # Use root to create a new user and configure permissions
@@ -7,7 +10,17 @@ USER root
 
 # Install wget to download JAR files
 RUN apt-get update && apt-get install -y wget && \
+    apt-get install -y python3-pip && \ 
+    apt-get install -y zip && \
     rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+#RUN pip install --no-cache-dir -r requirements.txt --target /opt/spark/python/lib/boto3/
+
+# RUN pip3 install boto3 -t ./boto3/
+# RUN zip -r /opt/spark/python/lib/boto3.zip ./boto3/*
+# RUN rm -rf boto3
 
 # Create a new user 'spark-user' with UID 1001
 RUN groupadd -r spark-group && useradd -r -u 1001 -g spark-group spark-user

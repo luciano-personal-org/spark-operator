@@ -57,7 +57,7 @@ spec:
     onSubmissionFailureRetryInterval: 20
   dynamicAllocation:
     enabled: true
-    initialExecutors: 5
+    initialExecutors: 2
     minExecutors: 5
     maxExecutors: 50
   driver:
@@ -73,19 +73,19 @@ spec:
       prometheus.io/port: '4040'
     serviceAccount: spark-team-a
     nodeSelector:
-      NodeGroupType: "SparkComputeOptimized"
+      NodeGroupType: "spark-spot-48cpu-2024121218412181890000000c"
     tolerations:
-      - key: "spark-compute-optimized"
+      - key: "spark-spot-ca"
         operator: "Exists"
         effect: "NoSchedule"
     env:
       - name: S3_BUCKET_NAME
         value: "my-iceberg-data-bucket-20241205162135678300000004" # Replace with your S3 bucket name: s3_bucket_id_iceberg_bucket
       - name: KAFKA_ADDRESS
-        value: "b-1.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092,b-2.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092" # Replace with your Kafka brokers address: bootstrap_brokers
+        value: "b-1.kafkademospark.kjxpc1.c13.kafka.us-east-1.amazonaws.com:9092,b-2.kafkademospark.kjxpc1.c13.kafka.us-east-1.amazonaws.com:9092" # Replace with your Kafka brokers address: bootstrap_brokers
         # value: "b-1.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092,b-2.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092"
   executor:
-    cores: 4
+    cores: 2
     memory: "8g"
     labels:
       version: "3.3.2"
@@ -96,14 +96,14 @@ spec:
       prometheus.io/port: '4040'
     serviceAccount: spark-team-a
     nodeSelector:
-      NodeGroupType: "SparkComputeOptimized"
+      NodeGroupType: "spark-spot-48cpu-2024121218412181890000000c"
     tolerations:
-      - key: "spark-compute-optimized"
+      - key: "spark-spot-ca"
         operator: "Exists"
         effect: "NoSchedule"
     env:
       - name: S3_BUCKET_NAME
         value: "my-iceberg-data-bucket-20241205162135678300000004" # Replace with your S3 bucket name: s3_bucket_id_iceberg_bucket
       - name: KAFKA_ADDRESS
-        value: "b-1.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092,b-2.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092" # Replace with your Kafka brokers address: bootstrap_brokers
+        value: "b-1.kafkademospark.kjxpc1.c13.kafka.us-east-1.amazonaws.com:9092,b-2.kafkademospark.kjxpc1.c13.kafka.us-east-1.amazonaws.com:9092" # Replace with your Kafka brokers address: bootstrap_brokers
         # value: "b-1.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092,b-2.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092"

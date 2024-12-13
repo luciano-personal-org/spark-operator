@@ -1,19 +1,7 @@
 import boto3
-import json
-#from kafka import KafkaProducer
-#from kafka.admin import KafkaAdminClient, NewTopic
-#from kafka.errors import KafkaError, TopicAlreadyExistsError
-#from concurrent.futures import ThreadPoolExecutor, as_completed
-import time
 import random
-import os
-import threading
-
-# Variables
-queue_url = "https://sqs.us-east-1.amazonaws.com/992382765082/spark-luciano-test-1"
-
-# Initialize SQS client
-sqs = boto3.client('sqs')
+import time
+import json
 
 def generate_alert():
     alert = {
@@ -32,9 +20,12 @@ def send_alert_to_sqs(alert):
     )
     return response
 
+queue_url = "https://sqs.us-east-1.amazonaws.com/992382765082/luciano-spark-queue"
+sqs = boto3.client('sqs')
+
 if __name__ == "__main__":
     while True:
         alert = generate_alert()
         response = send_alert_to_sqs(alert)
         print(f"Sent alert: {alert}")
-        #time.sleep(5)  # Wait for 5 seconds before sending the next alert
+        #time.sleep()  # Wait for 5 seconds before sending the next alert
