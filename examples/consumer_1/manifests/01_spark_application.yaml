@@ -8,18 +8,9 @@ metadata:
 spec:
   type: Python
   pythonVersion: "3"
-  #Policy: arn:aws:iam::992382765082:policy/FullS3SQSAccess
-  #Role: arn:aws:iam::992382765082:role/EKS-S3-SQS-FullAccess
-  # Buckets:
-  # spark-luciano-test-1
-  # spark-luciano-test-2
-  # spark-luciano-test-3
-  # spark-luciano-test-4
-  # SQS:
-  # https://sqs.us-east-1.amazonaws.com/992382765082/spark-luciano-test-1
   mode: cluster
   #image: "public.ecr.aws/data-on-eks/consumer-spark-streaming-3.3.2-kafka:1" # You can build your own image using the Dockerfile in this folder
-  image: "992382765082.dkr.ecr.us-east-1.amazonaws.com/luciano/consumer:v6" # You can build your own image using the Dockerfile in this folder
+  image: "992382765082.dkr.ecr.us-east-1.amazonaws.com/luciano/consumer:v18" # You can build your own image using the Dockerfile in this folder
   
   mainApplicationFile: "local:///app/app.py"
   sparkVersion: "3.3.2"
@@ -43,9 +34,6 @@ spec:
       - "local:///app/jars/aws-java-sdk-bundle-1.11.1026.jar"
       - "local:///app/jars/wildfly-openssl-1.0.7.Final.jar"
       - "local:///app/jars/parquet-avro-1.12.3.jar"
-    # pyFiles:
-    #   - "local:///app/dependencies/boto3.zip"
-    # /opt/spark/bin/spark-submit --jars $(echo /app/jars/*.jar | tr ' ' ',') app.py
   sparkConf:
     "spark.app.name": "SQSToIceberg"
     "spark.jars.repositories": "https://repo1.maven.org/maven2/"
@@ -56,12 +44,12 @@ spec:
     "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
     "spark.hadoop.fs.s3a.aws.credentials.provider": "com.amazonaws.auth.DefaultAWSCredentialsProviderChain"
     "spark.sql.warehouse.dir": "s3a://spark-luciano-test-1/iceberg/warehouse/" # Replace bucket name with your S3 bucket name: s3_bucket_id_iceberg_bucket
-    # "spark.metrics.conf.*.sink.prometheusServlet.class": "org.apache.spark.metrics.sink.PrometheusServlet"
-    # "spark.metrics.conf.*.sink.prometheusServlet.path": "/metrics"
-    # "spark.metrics.conf.master.sink.prometheusServlet.path": "/metrics/master"
-    # "spark.metrics.conf.applications.sink.prometheusServlet.path": "/metrics/applications"
-    # "spark.ui.prometheus.enabled": "true"
-    # "spark.ui.prometheus.port": "4040"
+    "spark.metrics.conf.*.sink.prometheusServlet.class": "org.apache.spark.metrics.sink.PrometheusServlet"
+    "spark.metrics.conf.*.sink.prometheusServlet.path": "/metrics"
+    "spark.metrics.conf.master.sink.prometheusServlet.path": "/metrics/master"
+    "spark.metrics.conf.applications.sink.prometheusServlet.path": "/metrics/applications"
+    "spark.ui.prometheus.enabled": "true"
+    "spark.ui.prometheus.port": "4040"
   restartPolicy:
     type: OnFailure
     onFailureRetries: 2
@@ -80,31 +68,21 @@ spec:
     labels:
       version: "3.3.2"
       app: spark
-    serviceAccount: spark-sa-test
-    # sparkConf:
-    #   "spark.submit.pyFiles": "local:///opt/spark/python/lib/boto3.zip"
+    serviceAccount: spark-operator-spark
     env:
       - name: S3_BUCKET_NAME
         value: "spark-luciano-test-1" # Replace with your S3 bucket name: s3_bucket_id_iceberg_bucket
       - name: KAFKA_ADDRESS
         value: "b-1.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092,b-2.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092" # Replace with your Kafka brokers address: bootstrap_brokers
-        # value: "b-1.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092,b-2.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092"
-      # - name: PYTHONPATH
-      #   value: $PYTHONPATH:$SPARK_HOME/python/lib/py4j-0.10.9.5-src.zip:$SPARK_HOME/python/lib/pyspark.zip:$SPARK_HOME/python/lib/boto3.zip
   executor:
     cores: 2
     memory: "8g"
     labels:
       version: "3.3.2"
       app: spark
-    serviceAccount: spark-sa-test
-    # sparkConf:
-    #   "spark.submit.pyFiles": "local:///opt/spark/python/lib/boto3.zip"
+    serviceAccount: spark-operator-spark
     env:
       - name: S3_BUCKET_NAME
         value: "spark-luciano-test-1" # Replace with your S3 bucket name: s3_bucket_id_iceberg_bucket
       - name: KAFKA_ADDRESS
         value: "b-1.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092,b-2.kafkademospark.d0c8nh.c13.kafka.us-east-1.amazonaws.com:9092" # Replace with your Kafka brokers address: bootstrap_brokers
-        # value: "b-1.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092,b-2.kafkademospark.mkjcj4.c12.kafka.us-west-2.amazonaws.com:9092"
-      # - name: PYTHONPATH
-      #   value: $PYTHONPATH:$SPARK_HOME/python/lib/py4j-0.10.9.5-src.zip:$SPARK_HOME/python/lib/pyspark.zip:$SPARK_HOME/python/lib/boto3.zip
