@@ -1,0 +1,18 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::992382765082:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/7845EE55F825C4E876D07CC52C5C197E"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "oidc.eks.us-east-1.amazonaws.com/id/7845EE55F825C4E876D07CC52C5C197E:aud": "sts.amazonaws.com",
+          "oidc.eks.us-east-1.amazonaws.com/id/7845EE55F825C4E876D07CC52C5C197E:sub": "system:serviceaccount:default:spark-operator-spark"
+        }
+      }
+    }
+  ]
+}

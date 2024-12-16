@@ -19,10 +19,6 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 #RUN pip install --no-cache-dir -r requirements.txt --target /opt/spark/python/lib/boto3/
 
-# RUN pip3 install boto3 -t ./boto3/
-# RUN zip -r /opt/spark/python/lib/boto3.zip ./boto3/*
-# RUN rm -rf boto3
-
 # Create a new user 'spark-user' with UID 1001
 RUN groupadd -r spark-group && useradd -r -u 1001 -g spark-group spark-user
 

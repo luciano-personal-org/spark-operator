@@ -10,7 +10,7 @@ spec:
   pythonVersion: "3"
   mode: cluster
   #image: "public.ecr.aws/data-on-eks/consumer-spark-streaming-3.3.2-kafka:1" # You can build your own image using the Dockerfile in this folder
-  image: "992382765082.dkr.ecr.us-east-1.amazonaws.com/luciano/consumer:v18" # You can build your own image using the Dockerfile in this folder
+  image: "992382765082.dkr.ecr.us-east-1.amazonaws.com/luciano/consumer:v20" # You can build your own image using the Dockerfile in this folder
   
   mainApplicationFile: "local:///app/app.py"
   sparkVersion: "3.3.2"
